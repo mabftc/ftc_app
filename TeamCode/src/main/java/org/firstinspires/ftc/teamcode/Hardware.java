@@ -1,8 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
-/**
- * Created by mbowman on 10/2/17.
- */
+import com.qualcomm.robotcore.hardware.HardwareMap;
 
-public class Hardware {
+public interface Hardware {
+    public void init(HardwareMap hw, boolean usingEncoders);
 }
