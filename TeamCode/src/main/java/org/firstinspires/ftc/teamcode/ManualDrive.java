@@ -1,8 +1,10 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import org.firstinspires.ftc.teamcode.Hardware.Hardware;
+import org.firstinspires.ftc.teamcode.Hardware.DriveHardware;
+import org.firstinspires.ftc.teamcode.Hardware.RobotHardware;
 
 /**
  * Main Drive class
@@ -10,9 +12,9 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
  * @version 10/02/2017
  */
 
-@TeleOp(name="ManualDrive", group="Manual")
-public class MecanumManualDrive extends OpMode {
-    private DriveHardware robot;
+@TeleOp(name="Manual Drive", group="Manual")
+public class ManualDrive extends OpMode {
+    private Hardware robot;
 
     /**
      * Code to run ONCE when the driver hits INIT
@@ -21,7 +23,7 @@ public class MecanumManualDrive extends OpMode {
     public void init() {
         telemetry.addData("Status", "Initializing...");
 
-        robot = new DriveHardware();
+        robot = new RobotHardware();
         robot.init(hardwareMap, false);
 
     }
@@ -47,8 +49,8 @@ public class MecanumManualDrive extends OpMode {
      */
     @Override
     public void loop() {
-        double left_y = -gamepad1.left_stick_y; // positive for right
-        double right_y = -gamepad1.right_stick_x; // positive for right
+        double left_y = gamepad1.left_stick_y; // positive for right
+        double right_y = gamepad1.right_stick_y; // positive for right
 
         this.robot.frontLeft.setPower(left_y);
         this.robot.backLeft.setPower(left_y);

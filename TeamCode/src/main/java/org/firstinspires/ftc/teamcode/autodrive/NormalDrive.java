@@ -1,9 +1,9 @@
 package org.firstinspires.ftc.teamcode.autodrive;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import org.firstinspires.ftc.teamcode.OmniHardware;
+import org.firstinspires.ftc.teamcode.Hardware.Hardware.OmniHardware;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import org.firstinspires.ftc.teamcode.Hardware;
+import org.firstinspires.ftc.teamcode.Hardware.Hardware;
 
 public class NormalDrive implements Drive {
     protected LinearOpMode robotOpMode;

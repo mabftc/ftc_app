@@ -1,6 +1,7 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.Hardware;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 /**
@@ -10,7 +11,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
  * @author mbowman
  * @version 10/02/2017
  */
-public class DriveHardware {
+public class DriveHardware implements Hardware {
     private boolean usingEncoders;
     private HardwareMap hwMap;
 
@@ -31,5 +32,12 @@ public class DriveHardware {
         this.frontRight = this.hwMap.dcMotor.get("frontRight");
         this.backLeft = this.hwMap.dcMotor.get("backLeft");
         this.backRight = this.hwMap.dcMotor.get("backRight");
+
+        this.backLeft.setDirection(DcMotor.Direction.REVERSE);
+        this.frontLeft.setDirection(DcMotor.Direction.REVERSE);
+
+        this.backRight.setDirection(DcMotor.Direction.FORWARD);
+        this.frontRight.setDirection(DcMotor.Direction.FORWARD);
+
     }
 }

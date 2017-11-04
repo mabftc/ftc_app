@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.autodrive;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.Hardware;
+import org.firstinspires.ftc.teamcode.Hardware.Hardware;
 
 /**
  * Mecanum Wheel Drive Class

@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.Hardware;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
  * @author mbowman
  * @version 10/11/2017
  */
-public class OmniHardware extends DriveHardware implements Hardware {
+public class OmniDriveHardware extends DriveHardware implements Hardware {
     public DcMotor hMotor;
 
     public void init(HardwareMap hwMap, boolean usingEncoders) {
