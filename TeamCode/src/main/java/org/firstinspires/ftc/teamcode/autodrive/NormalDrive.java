@@ -1,20 +1,20 @@
 package org.firstinspires.ftc.teamcode.autodrive;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import org.firstinspires.ftc.teamcode.hardware.Hardware.OmniHardware;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.teamcode.hardware.Hardware;
+import org.firstinspires.ftc.teamcode.hardware.RobotHardware;
 
 public class NormalDrive implements Drive {
     protected LinearOpMode robotOpMode;
-    protected OmniHardware hardware;
+    protected Hardware robot;
     protected double speed;
 
     public static final int COUNTS_PER_INCH = 1440; // for andymark motors
 
     public NormalDrive(LinearOpMode robotOpMode, Hardware hardware) {
         this.robotOpMode = this.robotOpMode;
-        this.hardware = (OmniHardware) hardware;
+        this.robot = new RobotHardware();
         this.speed = 0;
     }
 
@@ -70,35 +70,37 @@ public class NormalDrive implements Drive {
 
             // Determine new target position, and pass to motor controller
             // Mitigate encoder error by averaging
-            newLeftTarget = (this.hardware.frontLeft.getCurrentPosition() + (int) (leftInches * this.COUNTS_PER_INCH) + this.hardware.backLeft.getCurrentPosition() + (int) (leftInches * this.COUNTS_PER_INCH)) / 2;
-            newRightTarget = (this.hardware.frontRight.getCurrentPosition() + (int) (rightInches * this.COUNTS_PER_INCH) + this.hardware.backRight.getCurrentPosition() + (int) (rightInches * this.COUNTS_PER_INCH)) / 2;
+            newLeftTarget = (this.robot.frontLeft.getCurrentPosition() + (int) (leftInches * this.COUNTS_PER_INCH) + this.robot.backLeft.getCurrentPosition() + (int) (leftInches * this.COUNTS_PER_INCH)) / 2;
+            newRightTarget = (this.robot.frontRight.getCurrentPosition() + (int) (rightInches * this.COUNTS_PER_INCH) + this.robot.backRight.getCurrentPosition() + (int) (rightInches * this.COUNTS_PER_INCH)) / 2;
 
-            this.hardware.frontLeft.setTargetPosition(newLeftTarget);
-            this.hardware.frontRight.setTargetPosition(newRightTarget);
-            this.hardware.backLeft.setTargetPosition(newLeftTarget);
-            this.hardware.backRight.setTargetPosition(newRightTarget);
+            this.robot.frontLeft.setTargetPosition(newLeftTarget);
+            this.robot.frontRight.setTargetPosition(newRightTarget);
+            this.robot.backLeft.setTargetPosition(newLeftTarget);
+            this.robot.backRight.setTargetPosition(newRightTarget);
 
             // Turn On RUN_TO_POSITION
-            this.hardware.frontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            this.hardware.frontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            this.hardware.backLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            this.hardware.backRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            this.robot.frontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            this.robot.frontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            this.robot.backLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            this.robot.backRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
             // reset the timeout time and start motion.
-            this.hardware.frontLeft.setPower(Math.abs(this.speed));
-            this.hardware.frontRight.setPower(Math.abs(this.speed));
-            this.hardware.backLeft.setPower(Math.abs(this.speed));
-            this.hardware.backRight.setPower(Math.abs(this.speed));
+            this.robot.frontLeft.setPower(Math.abs(this.speed));
+            this.robot.frontRight.setPower(Math.abs(this.speed));
+            this.robot.backLeft.setPower(Math.abs(this.speed));
+            this.robot.backRight.setPower(Math.abs(this.speed));
 
             // keep looping while we are still active, and there is time left, and both motors are running.
-            //while (this.robotOpMode.opModeIsActive() && (this.hardware.leftMotor.isBusy() || this.hardware.rightMotor.isBusy()));
+            while (this.robotOpMode.opModeIsActive() && (this.robot.frontLeft.isBusy() || this.robot.frontRight.isBusy()));
 
             // Stop all motion
-            //brake();
+            brake();
 
             // Turn off RUN_TO_POSITION
-            //this.hardware.leftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            //this.hardware.rightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            this.robot.frontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            this.robot.frontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            this.robot.backLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            this.robot.backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
     }
 }

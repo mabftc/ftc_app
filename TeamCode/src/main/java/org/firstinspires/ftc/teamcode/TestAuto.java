@@ -10,12 +10,12 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
-
 import org.firstinspires.ftc.teamcode.hardware.Hardware;
+import org.firstinspires.ftc.teamcode.hardware.RobotHardware;
 
 @Autonomous(name = "System Test OpMode", group = "Autonomous")
 public class TestAuto extends LinearOpMode {
-    Hardware.DriveHardware robot = new Hardware.DriveHardware(); // Initialize hardware.
+    Hardware  robot = new RobotHardware(); // Initialize hardware.
     private ElapsedTime runtime;
 
 
