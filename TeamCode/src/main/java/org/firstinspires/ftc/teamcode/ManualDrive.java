@@ -2,9 +2,8 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import org.firstinspires.ftc.teamcode.Hardware.Hardware;
-import org.firstinspires.ftc.teamcode.Hardware.DriveHardware;
-import org.firstinspires.ftc.teamcode.Hardware.RobotHardware;
+import org.firstinspires.ftc.teamcode.hardware.Hardware;
+import org.firstinspires.ftc.teamcode.hardware.RobotHardware;
 
 /**
  * Main Drive class
