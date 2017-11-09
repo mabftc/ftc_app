@@ -9,15 +9,12 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.util.ElapsedTime;
+
 import org.firstinspires.ftc.teamcode.hardware.Hardware;
-import org.firstinspires.ftc.teamcode.hardware.RobotHardware;
 
 @Autonomous(name = "System Test OpMode", group = "Autonomous")
 public class TestAuto extends LinearOpMode {
-    Hardware  robot = new RobotHardware(); // Initialize hardware.
-    private ElapsedTime runtime;
-
+    Hardware robot = new Hardware(this); // Initialize hardware.
 
     @Override
     public void runOpMode() {
@@ -28,21 +25,12 @@ public class TestAuto extends LinearOpMode {
         telemetry.update();
 
         waitForStart(); // Wait until ready.
-        runtime = new ElapsedTime(); // Start the timer
 
-        robot.backLeft.setPower(1);
         robot.frontLeft.setPower(1);
-        robot.frontRight.setPower(1);
-        robot.backRight.setPower(1);
+        robot.backLeft.setPower(1);
 
         while (opModeIsActive());
 
         telemetry.addData("DATA", "Okay");
-        /*drive.move(10);
-        drive.turn(90);
-        drive.turn(-90);
-        drive.turn(0);
-        drive.turn(359);
-        drive.turn(1);*/
     }
 }

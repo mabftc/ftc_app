@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode.autodrive;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.teamcode.hardware.Hardware;
-import org.firstinspires.ftc.teamcode.hardware.RobotHardware;
 
 public class NormalDrive implements Drive {
     protected LinearOpMode robotOpMode;
@@ -14,7 +13,7 @@ public class NormalDrive implements Drive {
 
     public NormalDrive(LinearOpMode robotOpMode, Hardware hardware) {
         this.robotOpMode = this.robotOpMode;
-        this.robot = new RobotHardware();
+        this.robot = new Hardware(robotOpMode);
         this.speed = 0;
     }
 
