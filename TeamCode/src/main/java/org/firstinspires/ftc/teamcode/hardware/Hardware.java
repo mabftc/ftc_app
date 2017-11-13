@@ -23,12 +23,14 @@ public class Hardware {
     public DcMotor backLeft;
     public DcMotor backRight;
 
-    public DcMotor arm;
+    public DcMotor armLeft;
+    public DcMotor armRight;
 
     public Servo leftGrip;
     public Servo rightGrip;
 
-    public ModernRoboticsI2cGyro gyro;
+    // sensors
+    //public ModernRoboticsI2cGyro gyro;
 
     public Hardware(OpMode opMode) {
         this.opMode = opMode;
@@ -45,39 +47,51 @@ public class Hardware {
         this.backLeft = this.hwMap.dcMotor.get("backLeft");
         this.backRight = this.hwMap.dcMotor.get("backRight");
 
-        this.arm = this.hwMap.dcMotor.get("arm");
+        this.armLeft = this.hwMap.dcMotor.get("armLeft");
+        this.armRight = this.hwMap.dcMotor.get("armRight");
+
 
         this.frontLeft.setPower(0);
         this.frontRight.setPower(0);
         this.backLeft.setPower(0);
         this.backRight.setPower(0);
-        this.arm.setPower(0);
-
         this.backLeft.setDirection(DcMotor.Direction.REVERSE);
         this.frontLeft.setDirection(DcMotor.Direction.REVERSE);
-
         this.backRight.setDirection(DcMotor.Direction.FORWARD);
         this.frontRight.setDirection(DcMotor.Direction.FORWARD);
+        this.frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        this.frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        this.backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        this.backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        this.arm.setDirection(DcMotor.Direction.FORWARD); // so that it rotates upward with a positive value
+        this.armRight.setPower(0);
+        this.armLeft.setPower(0);
+        this.armLeft.setDirection(DcMotor.Direction.FORWARD); // so that it rotates upward with a positive value
+        this.armRight.setDirection(DcMotor.Direction.REVERSE);
+        this.armRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        this.armLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         this.leftGrip = hwMap.get(Servo.class, "leftGrip");
         this.rightGrip = hwMap.get(Servo.class, "rightGrip");
-        this.leftGrip.setPosition(0.5);
-        this.rightGrip.setPosition(0.5);
+        this.leftGrip.setDirection(Servo.Direction.FORWARD);
+        this.rightGrip.setDirection(Servo.Direction.REVERSE);
+        this.leftGrip.setPosition(0);
+        this.rightGrip.setPosition(0);
 
         // sensors
-        gyro.calibrate();
-        opMode.telemetry.addData("Update", "Calibrating gyro...");
+        /*opMode.telemetry.addData("Update", "Calibrating gyro...");
         while (gyro.isCalibrating());
         gyro = (ModernRoboticsI2cGyro) hwMap.gyroSensor.get("gyro");
-        gyro.resetZAxisIntegrator();
+        gyro.calibrate();
+        gyro.resetZAxisIntegrator();*/
 
     }
 
-    // sensors for sensor reading
+    /* sensors for sensor reading
     public int getHeading() {
         return gyro.getIntegratedZValue();
-    }
+    }*/
+
+    public HardwareMap getHwMap() { return hwMap; }
 
 }

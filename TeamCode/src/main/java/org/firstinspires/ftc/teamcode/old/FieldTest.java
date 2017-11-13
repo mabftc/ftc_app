@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.old;
 /**
  * Test class: Gyro and Elapsed time Testing
  * A sandbox OpMode to test new systems
@@ -12,9 +12,10 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.hardware.Hardware;
 
-@Autonomous(name = "System Test OpMode", group = "Autonomous")
-public class TestAuto extends LinearOpMode {
+@Autonomous(name = "Field Test OpMode", group = "Autonomous")
+public class FieldTest extends LinearOpMode {
     Hardware robot = new Hardware(this); // Initialize hardware.
+    double test = 0;
 
     @Override
     public void runOpMode() {
@@ -26,8 +27,17 @@ public class TestAuto extends LinearOpMode {
 
         waitForStart(); // Wait until ready.
 
-        robot.frontLeft.setPower(1);
-        robot.backLeft.setPower(1);
+        this.robot.frontLeft.setPower(1);
+        this.robot.frontRight.setPower(1);
+        this.robot.backLeft.setPower(1);
+        this.robot.backRight.setPower(1);
+
+        sleep(15000);
+
+        this.robot.frontLeft.setPower(0);
+        this.robot.frontRight.setPower(0);
+        this.robot.backLeft.setPower(0);
+        this.robot.backRight.setPower(0);
 
         while (opModeIsActive());
 
