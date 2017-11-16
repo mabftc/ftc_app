@@ -8,14 +8,15 @@ import org.firstinspires.ftc.teamcode.hardware.HardwareController;
 public class BlueAutonomous extends LinearOpMode {
     HardwareController controller;
 
-
     @Override
     public void runOpMode() {
+        controller = new HardwareController(this, hardwareMap);
         controller.forward(12);
         controller.brake();
         while(opModeIsActive()) {
-            telemetry.addData("Detected", controller.getSymbol());
+            telemetry.addData("Vuforia detected", controller.getSymbol());
             telemetry.update();
+            sleep(100);
         }
     }
 }

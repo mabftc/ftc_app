@@ -19,7 +19,8 @@ public class ManualDrive extends LinearOpMode {
      */
     @Override
     public void runOpMode() {
-        controller = new HardwareController(this);
+        controller = new HardwareController(this, hardwareMap);
+        controller.turnOnManualMode();
 
         waitForStart();
 

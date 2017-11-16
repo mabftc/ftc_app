@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.hardware;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
@@ -9,31 +10,33 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 public class HardwareController implements Controller {
-    protected LinearOpMode robotOpMode;
-    protected Hardware robot;
-    protected double speed;
+    // Instance variables
+    private Hardware robot;
+    private double speed;
+    private LinearOpMode opMode;
+    private VuforiaLocalizer vuforia;
+    private VuforiaTrackable relicTemplate;
 
     // Constants
-    static final double     COUNTS_PER_MOTOR_REV    = 1120;    // for AndyMark NeveRest 40 classic
+    static final double     COUNTS_PER_MOTOR_REV    = 1120; // for AndyMark NeveRest 40 classic
     static final double     DRIVE_GEAR_REDUCTION    = 1.0;
     static final double     WHEEL_DIAMETER_INCHES   = 4.0;
-    static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
-            (WHEEL_DIAMETER_INCHES * Math.PI);
+    static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) / (WHEEL_DIAMETER_INCHES * Math.PI);
 
     public static final double LEFT_CLAW_CLOSED     = 0;
     public static final double RIGHT_CLAW_CLOSED    = 0;
     public static final double LEFT_CLAW_OPEN       = 0;
     public static final double RIGHT_CLAW_OPEN      = 0;
 
-    private final double LIFT_SENSITIVITY           = 0.20;
+    public static final double LIFT_SENSITIVITY     = 0.20;
 
-    private VuforiaLocalizer vuforia;
-    private VuforiaTrackable relicTemplate;
 
-    public HardwareController(LinearOpMode rOpMode) {
-        robotOpMode = rOpMode;
-        robot = new Hardware(robotOpMode);
-        this.speed = 0;
+    public HardwareController(LinearOpMode rOpMode, HardwareMap hwMap) {
+        // initialize hardware
+        robot = new Hardware();
+        robot.init(hwMap);
+        this.speed = 0.5;
+        this.opMode = rOpMode;
 
         // set up vuforia
         int cameraMonitorViewId = robot.getHwMap().appContext.getResources().getIdentifier("cameraMonitorViewId", "id", robot.getHwMap().appContext.getPackageName());
@@ -46,6 +49,7 @@ public class HardwareController implements Controller {
         VuforiaTrackable relicTemplate = relicTrackables.get(0);
         this.relicTemplate = relicTemplate;
         relicTrackables.activate();
+        rOpMode.telemetry.addData("Update","Passed vuforia initialization.");
     }
 
     // === Vuforia === //
@@ -85,7 +89,11 @@ public class HardwareController implements Controller {
     
     // === Drive === //
     public void turn(int theta) {
+        if (theta > 0) {
+            // rightward motion increases reading from IMU
+        } else {
 
+        }
     }
 
     public void forward(int left, int right) {
@@ -109,31 +117,28 @@ public class HardwareController implements Controller {
     }
 
     public void setPower(double left, double right) {
-        robot.frontLeft.setPower(left);
-        robot.frontRight.setPower(left);
-        robot.backLeft.setPower(right);
-        robot.backRight.setPower(right);
+        robot.left.setPower(left);
+        robot.right.setPower(left);
     }
 
     public void brake() {
-        robot.backLeft.setPower(0);
-        robot.frontLeft.setPower(0);
-        robot.backRight.setPower(0);
-        robot.frontRight.setPower(0);
+        robot.left.setPower(0);
+        robot.right.setPower(0);
+    }
+
+    public void turnOnManualMode() {
+        robot.left.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.right.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     private void turnOffEncoders() {
-        robot.frontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.frontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.backLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.left.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.right.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
     private void turnOnEncoders() {
-        robot.frontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.frontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.backLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.backRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
     /**
@@ -148,23 +153,19 @@ public class HardwareController implements Controller {
         int newRightTarget;
 
         // Ensure that the OpMode is still active
-        if (robotOpMode.opModeIsActive()) {
-            newLeftTarget = (robot.frontLeft.getCurrentPosition() + (int) (leftInches * this.COUNTS_PER_INCH) + robot.backLeft.getCurrentPosition() + (int) (leftInches * this.COUNTS_PER_INCH)) / 2;
-            newRightTarget = (robot.frontRight.getCurrentPosition() + (int) (rightInches * this.COUNTS_PER_INCH) + robot.backRight.getCurrentPosition() + (int) (rightInches * this.COUNTS_PER_INCH)) / 2;
+        if (opMode.opModeIsActive()) {
+            newLeftTarget = (robot.left.getCurrentPosition() + (int) (leftInches * this.COUNTS_PER_INCH));
+            newRightTarget = (robot.right.getCurrentPosition() + (int) (rightInches * this.COUNTS_PER_INCH));
 
-            robot.frontLeft.setTargetPosition(newLeftTarget);
-            robot.frontRight.setTargetPosition(newRightTarget);
-            robot.backLeft.setTargetPosition(newLeftTarget);
-            robot.backRight.setTargetPosition(newRightTarget);
+            robot.left.setTargetPosition(newLeftTarget);
+            robot.right.setTargetPosition(newRightTarget);
 
             turnOnEncoders();
 
-            robot.frontLeft.setPower(Math.abs(this.speed));
-            robot.frontRight.setPower(Math.abs(this.speed));
-            robot.backLeft.setPower(Math.abs(this.speed));
-            robot.backRight.setPower(Math.abs(this.speed));
+            robot.left.setPower(Math.abs(this.speed));
+            robot.right.setPower(Math.abs(this.speed));
 
-            while (robotOpMode.opModeIsActive() && (robot.frontLeft.isBusy() || robot.frontRight.isBusy()));
+            while (opMode.opModeIsActive() && (robot.left.isBusy() || robot.right.isBusy()));
             brake();
             turnOffEncoders();
         }
