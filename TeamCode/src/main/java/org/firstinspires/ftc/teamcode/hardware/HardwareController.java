@@ -18,17 +18,15 @@ public class HardwareController implements Controller {
     private VuforiaTrackable relicTemplate;
 
     // Constants
-    static final double     COUNTS_PER_MOTOR_REV    = 1120; // for AndyMark NeveRest 40 classic
-    static final double     DRIVE_GEAR_REDUCTION    = 1.0;
-    static final double     WHEEL_DIAMETER_INCHES   = 4.0;
-    static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) / (WHEEL_DIAMETER_INCHES * Math.PI);
+    public static final double     COUNTS_PER_MOTOR_REV    = 1120; // for AndyMark NeveRest 40 classic
+    public static final double     DRIVE_GEAR_REDUCTION    = 1.0;
+    public static final double     WHEEL_DIAMETER_INCHES   = 4.0;
+    public static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) / (WHEEL_DIAMETER_INCHES * Math.PI);
 
-    public static final double LEFT_CLAW_CLOSED     = 0;
-    public static final double RIGHT_CLAW_CLOSED    = 0;
-    public static final double LEFT_CLAW_OPEN       = 0;
-    public static final double RIGHT_CLAW_OPEN      = 0;
+    public static final double CLAW_CLOSED          = 0;
+    public static final double CLAW_OPEN            = 0;
 
-    public static final double LIFT_SENSITIVITY     = 0.20;
+    public static final double LIFT_SENSITIVITY     = 0.30;
 
 
     public HardwareController(LinearOpMode rOpMode, HardwareMap hwMap) {
@@ -37,7 +35,8 @@ public class HardwareController implements Controller {
         robot.init(hwMap);
         this.speed = 0.5;
         this.opMode = rOpMode;
-
+        rOpMode.telemetry.addData("Update", "Passed hardware initialization.");
+        rOpMode.telemetry.update();
         // set up vuforia
         int cameraMonitorViewId = robot.getHwMap().appContext.getResources().getIdentifier("cameraMonitorViewId", "id", robot.getHwMap().appContext.getPackageName());
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
@@ -50,6 +49,7 @@ public class HardwareController implements Controller {
         this.relicTemplate = relicTemplate;
         relicTrackables.activate();
         rOpMode.telemetry.addData("Update","Passed vuforia initialization.");
+        rOpMode.telemetry.update();
     }
 
     // === Vuforia === //
@@ -65,26 +65,24 @@ public class HardwareController implements Controller {
 
     // === Lift === //
     public void raiseLift() {
-        this.robot.armRight.setPower(LIFT_SENSITIVITY);
+        robot.arm.setPower(LIFT_SENSITIVITY);
     }
 
     public void lowerLift() {
-        this.robot.armRight.setPower(-LIFT_SENSITIVITY);
+        robot.arm.setPower(-LIFT_SENSITIVITY);
     }
 
     public void stopLift() {
-        this.robot.armRight.setPower(0);
+        this.robot.arm.setPower(0);
     }
 
     // === Servo grips === //
     public void grip() {
-        robot.rightGrip.setPosition(RIGHT_CLAW_CLOSED);
-        robot.leftGrip.setPosition(LEFT_CLAW_CLOSED);
+        robot.grip.setPosition(CLAW_CLOSED);
     }
     
     public void release() {
-        robot.rightGrip.setPosition(RIGHT_CLAW_OPEN);
-        robot.leftGrip.setPosition(LEFT_CLAW_OPEN);
+        robot.grip.setPosition(CLAW_OPEN);
     }
     
     // === Drive === //

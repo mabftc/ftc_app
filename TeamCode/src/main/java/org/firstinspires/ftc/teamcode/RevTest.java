@@ -14,10 +14,18 @@ public class RevTest extends LinearOpMode {
     @Override
     public void runOpMode() {
         hw = new HardwareTest();
+        hw.left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        hw.right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         hw.init(hardwareMap, true);
-        encoderDrive(12, 12);
+        waitForStart();
+        while (opModeIsActive()) {
+            telemetry.addData("Update", hw.left.getCurrentPosition());
+            telemetry.update();
+            sleep(100);
+        }
     }
 
+    /*
     private void encoderDrive(double leftInches, double rightInches) {
         int newLeftTarget;
         int newRightTarget;
@@ -51,5 +59,5 @@ public class RevTest extends LinearOpMode {
             hw.right.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             hw.left.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
-    }
+    }*/
 }
