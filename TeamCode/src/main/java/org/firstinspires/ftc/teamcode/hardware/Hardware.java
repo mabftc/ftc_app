@@ -1,11 +1,17 @@
 package org.firstinspires.ftc.teamcode.hardware;
 
+import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
+import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+
 /**
- * A wrapper class around the HardwareMap inhereted from
+ * A wrapper class around the HardwareMap included in
  * OpMode classes. Makes it easier to interface with hardware
  * on the robot.
  * @author mbowman
@@ -20,22 +26,20 @@ public class Hardware {
     public DcMotor arm;
 
     public Servo grip;
+    public Servo jewelArm;
 
-    // sensors
-    //public ModernRoboticsI2cGyro gyro;
-
-    public Hardware() {
-
-    }
+    public ModernRoboticsI2cColorSensor colorSensor;
 
     public void init(HardwareMap hwMap) {
         this.hwMap = hwMap;
 
         // motors
-        left = this.hwMap.dcMotor.get("left");
-        right = this.hwMap.dcMotor.get("right");
+        left = hwMap.dcMotor.get("left");
+        right = hwMap.dcMotor.get("right");
 
-        arm = this.hwMap.dcMotor.get("arm");
+        arm = hwMap.dcMotor.get("arm");
+
+        colorSensor = (ModernRoboticsI2cColorSensor) hwMap.colorSensor.get("jewel");
 
         left.setPower(0);
         right.setPower(0);
@@ -51,6 +55,9 @@ public class Hardware {
         grip = hwMap.get(Servo.class, "grip");
         grip.setDirection(Servo.Direction.FORWARD);
         grip.setPosition(0);
+        jewelArm = hwMap.get(Servo.class, "jewelArm");
+        jewelArm.setDirection(Servo.Direction.FORWARD);
+        jewelArm.setPosition(0);
 
     }
 

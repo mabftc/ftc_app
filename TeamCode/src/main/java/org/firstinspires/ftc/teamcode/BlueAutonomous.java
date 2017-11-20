@@ -11,12 +11,20 @@ public class BlueAutonomous extends LinearOpMode {
     @Override
     public void runOpMode() {
         controller = new HardwareController(this, hardwareMap);
-        controller.forward(12);
-        controller.brake();
         while(opModeIsActive()) {
             telemetry.addData("Vuforia detected", controller.getSymbol());
+            telemetry.addData("Color detected", controller.getJewelColor());
             telemetry.update();
-            sleep(100);
+            sleep(1000);
+            controller.raiseJewelArm();
+            sleep(1000);
+            controller.lowerJewelArm();
+            sleep(1000);
+            controller.grip();
+            sleep(2000);
+            controller.release();
+            sleep(2000);
+
         }
     }
 }

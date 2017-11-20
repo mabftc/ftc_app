@@ -23,10 +23,12 @@ public class HardwareController implements Controller {
     public static final double     WHEEL_DIAMETER_INCHES   = 4.0;
     public static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) / (WHEEL_DIAMETER_INCHES * Math.PI);
 
-    public static final double CLAW_CLOSED          = 0;
-    public static final double CLAW_OPEN            = 0;
+    public static final double     CLAW_CLOSED             = 0;
+    public static final double     CLAW_OPEN               = 0.45;
+    public static final double     JEWEL_ARM_UP            = 0;
+    public static final double     JEWEL_ARM_DOWN          = 1;
 
-    public static final double LIFT_SENSITIVITY     = 0.30;
+    public static final double     LIFT_SENSITIVITY        = 0.30;
 
 
     public HardwareController(LinearOpMode rOpMode, HardwareMap hwMap) {
@@ -63,6 +65,16 @@ public class HardwareController implements Controller {
         return "u";
     }
 
+    // === Sensors === //
+    public char getJewelColor() {
+        if (robot.colorSensor.red() > robot.colorSensor.blue()) {
+            return 'r';
+        } else if (robot.colorSensor.blue() > robot.colorSensor.red()) {
+            return 'b';
+        }
+        return 'u';
+    }
+
     // === Lift === //
     public void raiseLift() {
         robot.arm.setPower(LIFT_SENSITIVITY);
@@ -84,6 +96,10 @@ public class HardwareController implements Controller {
     public void release() {
         robot.grip.setPosition(CLAW_OPEN);
     }
+
+    public void raiseJewelArm() { robot.jewelArm.setPosition(JEWEL_ARM_DOWN); }
+
+    public void lowerJewelArm() { robot.jewelArm.setPosition(JEWEL_ARM_UP); }
     
     // === Drive === //
     public void turn(int theta) {

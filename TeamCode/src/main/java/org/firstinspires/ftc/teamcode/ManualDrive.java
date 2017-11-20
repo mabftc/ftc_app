@@ -22,7 +22,10 @@ public class ManualDrive extends LinearOpMode {
         controller = new HardwareController(this, hardwareMap);
         controller.turnOnManualMode();
 
+        telemetry.addData("Update", "Press start");
+        telemetry.update();
         waitForStart();
+        telemetry.clear();
 
         boolean grip = false;
         while (opModeIsActive()) {
