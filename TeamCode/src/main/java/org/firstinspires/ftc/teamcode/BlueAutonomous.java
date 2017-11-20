@@ -20,11 +20,11 @@ public class BlueAutonomous extends LinearOpMode {
             sleep(1000);
             controller.lowerJewelArm();
             sleep(1000);
+            /*
             controller.grip();
             sleep(2000);
             controller.release();
-            sleep(2000);
-
+            sleep(2000);*/
         }
     }
 }

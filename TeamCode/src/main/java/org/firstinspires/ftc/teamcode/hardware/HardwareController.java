@@ -41,7 +41,7 @@ public class HardwareController implements Controller {
         rOpMode.telemetry.update();
         // set up vuforia
         int cameraMonitorViewId = robot.getHwMap().appContext.getResources().getIdentifier("cameraMonitorViewId", "id", robot.getHwMap().appContext.getPackageName());
-        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
+        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
         parameters.vuforiaLicenseKey = "AZqy8j//////AAAAGXdHb499g0jcuKn1w+ThVqF0JJE1+j2CsRU0Bgcf0Vw9EFwrkhQAGpk4PE0O5FG9DaUpGQwuwUfvincTO+tUpwFonFZiOFzoevgHwi3n13OZUrZT3CvkNgbJcPCAbG6HK/5KSK2V5e51tH06kQKBC9NRbZmqZeGyDl+uuKXnd+tXFYAWzPWr1i2BTjC6uoP4UkkiNrtJOKjyyWmbTGmqi7kqiluQJeWBZirACewukct0a6IhwHuby3aRR++LSLNB2P9f3xDv24XCxOq2cs4bW0C5vawAD68yKkdVGc5j58lxPR7Yea5jWr8GZDFcLeuEajRetAq2PEAktbd/K41GJMjyzftx6uBmMy9oK3ofv/da";
         parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
         this.vuforia = ClassFactory.createVuforiaLocalizer(parameters);
@@ -57,11 +57,9 @@ public class HardwareController implements Controller {
     // === Vuforia === //
     public String getSymbol() {
         RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
-        if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
-            if (vuMark == RelicRecoveryVuMark.LEFT) return "l";
-            else if (vuMark == RelicRecoveryVuMark.CENTER) return "c";
-            else if (vuMark == RelicRecoveryVuMark.RIGHT) return "r";
-        }
+        if (vuMark == RelicRecoveryVuMark.LEFT) return "l";
+        else if (vuMark == RelicRecoveryVuMark.CENTER) return "c";
+        else if (vuMark == RelicRecoveryVuMark.RIGHT) return "r";
         return "u";
     }
 
