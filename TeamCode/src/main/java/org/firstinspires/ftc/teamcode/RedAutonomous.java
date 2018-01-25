@@ -3,14 +3,14 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.teamcode.hardware.AutonomousHardwareController;
 
-@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "Advanced Blue Autonomous", group = "Autonomous")
-public class BlueAutonomous extends LinearOpMode {
+@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "Advanced Red Autonomous", group = "Autonomous")
+public class RedAutonomous extends LinearOpMode {
 
     AutonomousHardwareController controller;
-    char myChar = 'b';
+    char myChar = 'r';
 
     @Override
-    public void runOpMode() {
+    public void runOpMode() throws InterruptedException {
         controller = new AutonomousHardwareController(this, hardwareMap);
         controller.init();
         waitForStart();
@@ -20,8 +20,6 @@ public class BlueAutonomous extends LinearOpMode {
             controller.lowerJewelArm();
             sleep(3000);
             char jewelColor = controller.getJewelColor();
-            telemetry.addData("Color", jewelColor);
-            telemetry.update();
 
             if (myChar != jewelColor) {
                 controller.forward(4);
@@ -32,10 +30,6 @@ public class BlueAutonomous extends LinearOpMode {
                 controller.raiseJewelArm();
                 controller.forward(23);
             }
-
-            controller.backward(2);
-            controller.encoderDrive(3, -3);
-            controller.forward(7);
         }
     }
 }
